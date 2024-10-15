@@ -1,0 +1,1 @@
+# Hàm xử lý extract file zip + embedding

@@ -1,0 +1,1 @@
+# API nhận file zip ==> extract + embedding
