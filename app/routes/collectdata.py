@@ -31,8 +31,6 @@ def receive_zip(file: UploadFile = File(...)):
     except zipfile.BadZipFile:
         return {"error": "File is not a valid zip file."}
 
-
-
     embeddings = embed_images(extracted_subfolder)
 
     output_json_path = os.path.join(extracted_subfolder, f"{zip_filename_without_extension}_embeddings.json")
