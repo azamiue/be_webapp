@@ -1,6 +1,6 @@
 import os
 import zipfile
-from models.model_embedding import EmbeddingModel
+from app.models.model_embedding import EmbeddingModel
 
 # Khởi tạo hàm giải nén file zip
 def extract_zip(zip_path, extract_to):

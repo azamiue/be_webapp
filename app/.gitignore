@@ -3,3 +3,4 @@ __pycache__/
 cache/captured_data/*
 cache/*.csv
 logs/*.log
+.env
