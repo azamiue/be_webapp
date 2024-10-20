@@ -1,6 +1,6 @@
 from fastapi import APIRouter, File, UploadFile
 import os, zipfile, json
-from services.extract_embedding import extract_zip, embed_images
+from app.services.extract_embedding import extract_zip, embed_images
 
 router = APIRouter()
 
