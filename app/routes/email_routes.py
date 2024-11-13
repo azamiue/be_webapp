@@ -1,6 +1,6 @@
 from fastapi import APIRouter, BackgroundTasks
 from pydantic import EmailStr, BaseModel
-from app.utils.email_utils import send_email, send_personalized_emails
+from utils.email_utils import send_email, send_personalized_emails
 
 email_routes = APIRouter()
 

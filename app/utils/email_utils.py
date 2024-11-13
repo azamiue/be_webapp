@@ -1,5 +1,5 @@
 from fastapi_mail import FastMail, MessageSchema, MessageType
-from app.config.email_config import conf
+from config.email_config import conf
 import os
 from jinja2 import Environment, FileSystemLoader
 from typing import List
