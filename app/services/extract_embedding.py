@@ -1,6 +1,6 @@
 import os
-import zipfile
-from app.models.model_embedding import EmbeddingModel
+import zipfile, json
+from models.model_embedding import EmbeddingModel
 
 # Khởi tạo hàm giải nén file zip
 def extract_zip(zip_path, extract_to):
@@ -13,13 +13,15 @@ def extract_zip(zip_path, extract_to):
 # Khởi tạo hàm embedding ảnh
 def embed_images(extracted_dir):
     embedding_model = EmbeddingModel()  
-    results = {}
+    results = []
+    files_ = []
 
     for root, dirs, files in os.walk(extracted_dir):
         for file in files:
             if file.endswith(('.png', '.jpg', '.jpeg')):  
                 image_path = os.path.join(root, file)
                 embedding = embedding_model.embed(image_path)  
-                results[file] = {"vector": embedding} 
+                results.append(embedding)
+                files_.append(file)
 
-    return results 
+    return results,files

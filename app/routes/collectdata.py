@@ -1,43 +1,93 @@
 from fastapi import APIRouter, File, UploadFile
-import os, zipfile, json
-from app.services.extract_embedding import extract_zip, embed_images
+import os, json
+from services.extract_embedding import embed_images
+from datetime import datetime
+import pytz
 
 router = APIRouter()
 
-@router.post("/send-zip")
-def receive_zip(file: UploadFile = File(...)):
-    if not file.filename.endswith('.zip'):
-        return {"error": "File must be a zip file."}
+@router.get("/embed")
+def embed():
 
-    if not os.path.exists("files"):
-        os.makedirs("files")
+    base_folder = "/home/capybara/data/pics/"
+    embed_folder = "/home/capybara/data/embed"
+
+    if not os.path.exists(base_folder):
+        return {"error": f"Base folder '{base_folder}' does not exist."}
     
-    if not os.path.exists("extracted"):
-        os.makedirs("extracted")
-    
-    file_location = f"files/{file.filename}"
-    
-    with open(file_location, "wb+") as file_object:
-        file_object.write(file.file.read())
+    # Tạo thư mục lưu kết quả nhúng (nếu chưa tồn tại)
+    if not os.path.exists(embed_folder):
+        os.makedirs(embed_folder)
 
-    zip_filename_without_extension = os.path.splitext(file.filename)[0]
+    processed_folders = []
+    skipped_folders = []
+    errors = []
 
-    extracted_subfolder = os.path.join("extracted", zip_filename_without_extension)
-    if not os.path.exists(extracted_subfolder):
-        os.makedirs(extracted_subfolder)
+    # Lấy danh sách thư mục đã tồn tại trong embed
+    existing_embeds = set(os.listdir(embed_folder))
 
-    try:
-        extract_zip(file_location, extracted_subfolder)
-    except zipfile.BadZipFile:
-        return {"error": "File is not a valid zip file."}
+    for subfolder in os.listdir(base_folder):
+        subfolder_path = os.path.join(base_folder, subfolder)
 
-    embeddings = embed_images(extracted_subfolder)
+        if os.path.isdir(subfolder_path) and subfolder not in existing_embeds:
+            try:
+                # Bỏ qua nếu không phải thư mục
+                if not os.path.isdir(subfolder_path):
+                    continue
+                    
+                # Tạo thư mục con trong "embed" tương ứng
+                embedded_data_subfolder = os.path.join(embed_folder, subfolder)
+                if not os.path.exists(embedded_data_subfolder):
+                    os.makedirs(embedded_data_subfolder)
 
-    output_json_path = os.path.join(extracted_subfolder, f"{zip_filename_without_extension}_embeddings.json")
-    with open(output_json_path, "w") as json_file:
-        json.dump(embeddings, json_file)
+                # Nhúng ảnh từ thư mục con
+                embeddings, files = embed_images(subfolder_path)
 
-    return {
-        "info": f"File '{file.filename}' saved and extracted to '{extracted_subfolder}'",
-        "embeddings_saved": output_json_path
+                # Lưu kết quả nhúng thành file JSON
+                for embedding, file in zip(embeddings, files):
+                    output_json_path = os.path.join(embedded_data_subfolder, f"{file}.json")
+                    with open(output_json_path, "w") as json_file:
+                        json.dump(embedding, json_file)
+
+                processed_folders.append(subfolder)
+            except Exception as e:
+                errors.append({"folder": subfolder, "error": str(e)})
+        else:
+            skipped_folders.append(subfolder)
+
+
+    # if os.path.isdir(subfolder_path):
+    #     embedded_data_subfolder = os.path.join(embed_folder, subfolder)
+    #     if not os.path.exists(embedded_data_subfolder):
+    #         os.makedirs(embedded_data_subfolder)
+
+    #     # embedding
+    #     embeddings, files = embed_images(subfolder_path)
+
+    #     # save json
+    #     for embedding, file in zip(embeddings, files):
+    #         output_json_path = os.path.join(embedded_data_subfolder, f"{file}.json")
+    #         with open(output_json_path, "w") as json_file:
+    #             json.dump(embedding, json_file)
+        
+    #     processed_folders.append(subfolder)
+
+    result = {
+        "info": f"Processed new subfolders in '{base_folder}'.",
+        "processed_folders": processed_folders,
+        "skipped_folders": skipped_folders,
+        "errors": errors,
+        "embeddings_saved_to": embed_folder
     }
+
+    # Get the current time in UTC
+    utc_now = datetime.now(pytz.utc)
+
+    # Convert to Vietnam timezone
+    vietnam_tz = pytz.timezone('Asia/Ho_Chi_Minh')
+    vietnam_time = utc_now.astimezone(vietnam_tz)
+
+    print("EMBEDDING IN", vietnam_time.strftime('%Y-%m-%d %H:%M:%S'))
+    print(json.dumps(result, indent=5, ensure_ascii=False))
+
+    return result

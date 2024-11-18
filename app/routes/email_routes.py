@@ -1,22 +1,22 @@
-from fastapi import APIRouter, BackgroundTasks
+from fastapi import APIRouter
 from pydantic import EmailStr, BaseModel
-from app.utils.email_utils import send_email, send_personalized_emails
+from utils.email_utils import send_email, send_personalized_emails
 
 email_routes = APIRouter()
 
-class EmailSchema(BaseModel):
-    subject: str
-    recipients: list[EmailStr]
-    body: str
+# class EmailSchema(BaseModel):
+#     subject: str
+#     recipients: list[EmailStr]
+#     body: str
 
-@email_routes.post("/send-email")
-async def send_email_route(email: EmailSchema):
-    test = await send_email(email.subject, email.recipients, email.body)
+# @email_routes.post("/send-email")
+# async def send_email_route(email: EmailSchema):
+#     test = await send_email(email.subject, email.recipients, email.body)
 
-    if test is True:
-        return {"message": "Email sending task has been send"}
-    else:
-        return {"message": "Email sending task has been failed"}
+#     if test is True:
+#         return {"message": "Email sending task has been send"}
+#     else:
+#         return {"message": "Email sending task has been failed"}
 
 
 class Recipient(BaseModel):
