@@ -47,3 +47,10 @@
 2024-11-23 18:07:26,678 - /Users/daoxuanbac/Personal/Thesis/be_webapp/app/middleware/http.py - INFO - 127.0.0.1 - "POST /update-status/bdc@gmail.com 1.1" 200 0.03s
 2024-11-23 18:07:40,886 - /Users/daoxuanbac/Personal/Thesis/be_webapp/app/middleware/http.py - INFO - 127.0.0.1 - "POST /update-status/bdc@gmail.com 1.1" 200 0.03s
 2024-11-23 18:07:44,321 - /Users/daoxuanbac/Personal/Thesis/be_webapp/app/middleware/http.py - INFO - 127.0.0.1 - "POST /update-status/bdc@gmail.com 1.1" 200 0.01s
+2024-11-23 18:17:11,351 - /Users/daoxuanbac/Personal/Thesis/be_webapp/app/middleware/http.py - INFO - 127.0.0.1 - "GET / 1.1" 404 0.00s
+2024-11-23 18:17:14,957 - /Users/daoxuanbac/Personal/Thesis/be_webapp/app/middleware/http.py - INFO - 127.0.0.1 - "GET /docs 1.1" 200 0.00s
+2024-11-23 18:17:15,059 - /Users/daoxuanbac/Personal/Thesis/be_webapp/app/middleware/http.py - INFO - 127.0.0.1 - "GET /openapi.json 1.1" 200 0.01s
+2024-11-23 18:17:27,227 - /Users/daoxuanbac/Personal/Thesis/be_webapp/app/middleware/http.py - INFO - 127.0.0.1 - "POST /users/ 1.1" 200 0.01s
+2024-11-23 18:17:43,480 - /Users/daoxuanbac/Personal/Thesis/be_webapp/app/middleware/http.py - INFO - 127.0.0.1 - "POST /update-status/abc@gmail.com 1.1" 200 0.02s
+2024-11-23 18:18:35,359 - /Users/daoxuanbac/Personal/Thesis/be_webapp/app/middleware/http.py - INFO - 127.0.0.1 - "POST /users/ 1.1" 200 0.02s
+2024-11-23 18:18:46,211 - /Users/daoxuanbac/Personal/Thesis/be_webapp/app/middleware/http.py - INFO - 127.0.0.1 - "POST /update-status/abcd@gmail.com 1.1" 200 0.01s
