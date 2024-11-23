@@ -9,3 +9,6 @@ class User(Base):
     name = Column(String, index=True)
     email = Column(String, unique=True, index=True)
     reg = Column(Boolean, index=True)
+    le = Column(Boolean, index=True)
+    hoi = Column(Boolean, index=True)
+    cahai = Column(Boolean, index=True)

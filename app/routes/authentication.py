@@ -62,3 +62,88 @@ def update_reg(email: str, db: Session = Depends(get_db)):
             "reg": updated_user.reg
         }
     }
+
+@authen.post("/update-le/{email}")
+def update_le(email: str, db: Session = Depends(get_db)):
+    updated_user = crud.update_registration_le_status(db, email=email, status=1)
+    if not updated_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {
+        "status": True,
+        "message": "LE status updated successfully",
+        "user": {
+            "email": updated_user.email,
+            "le": updated_user.le
+        }
+    }
+
+
+@authen.post("/reset-le/{email}")
+def update_le(email: str, db: Session = Depends(get_db)):
+    updated_user = crud.update_registration_le_reset(db, email=email, status=0)
+    if not updated_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {
+        "status": True,
+        "message": "LE status updated successfully",
+        "user": {
+            "email": updated_user.email,
+            "le": updated_user.le
+        }
+    }
+
+@authen.post("/update-hoi/{email}")
+def update_hoi(email: str, db: Session = Depends(get_db)):
+    updated_user = crud.update_registration_hoi_status(db, email=email, status=1)
+    if not updated_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {
+        "status": True,
+        "message": "HOI status updated successfully",
+        "user": {
+            "email": updated_user.email,
+            "hoi": updated_user.hoi
+        }
+    }
+
+@authen.post("/reset-hoi/{email}")
+def update_hoi(email: str, db: Session = Depends(get_db)):
+    updated_user = crud.update_registration_hoi_reset(db, email=email, status=0)
+    if not updated_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {
+        "status": True,
+        "message": "HOI status updated successfully",
+        "user": {
+            "email": updated_user.email,
+            "hoi": updated_user.hoi
+        }
+    }
+
+@authen.post("/update-cahai/{email}")
+def update_cahai(email: str, db: Session = Depends(get_db)):
+    updated_user = crud.update_registration_cahai_status(db, email=email, status=1)
+    if not updated_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {
+        "status": True,
+        "message": "CAHAI status updated successfully",
+        "user": {
+            "email": updated_user.email,
+            "cahai": updated_user.cahai
+        }
+    }
+
+@authen.post("/reset-cahai/{email}")
+def update_cahai(email: str, db: Session = Depends(get_db)):
+    updated_user = crud.update_registration_cahai_reset(db, email=email, status=0)
+    if not updated_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {
+        "status": True,
+        "message": "CAHAI status updated successfully",
+        "user": {
+            "email": updated_user.email,
+            "cahai": updated_user.cahai
+        }
+    }
