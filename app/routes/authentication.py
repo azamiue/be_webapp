@@ -61,4 +61,52 @@ def update_reg(email: str, db: Session = Depends(get_db)):
             "email": updated_user.email,
             "reg": updated_user.reg
         }
-    }
+    }       
+
+@authen.post("/update-status/{email}")
+def update_le_hoi(email: str, status: str, db: Session = Depends(get_db)):
+
+    if status == "le":
+        updated_user = crud.update_registration_le_status(db, email=email)
+        if not updated_user:
+            raise HTTPException(status_code=404, detail="User not found")
+        updated_user = crud.update_registration_tiec_reset(db, email=email, status=0)
+        updated_user = crud.update_registration_cahai_reset(db, email=email, status=0)
+        return {
+        "status": True,
+        "message": "LE status updated successfully",
+        "user": {
+            "email": updated_user.email,
+            "le": updated_user.le
+            }
+            }
+    
+    if status == "tiec":
+        updated_user = crud.update_registration_hoi_status(db, email=email)
+        if not updated_user:
+            raise HTTPException(status_code=404, detail="User not found")
+        updated_user = crud.update_registration_tiec_reset(db, email=email, status=0)
+        updated_user = crud.update_registration_cahai_reset(db, email=email, status=0)
+        return {
+        "status": True,
+        "message": "Tiec status updated successfully",
+        "user": {
+            "email": updated_user.email,
+            "le": updated_user.tiec
+            }
+            }
+    
+    if status == "cahai":
+        updated_user = crud.update_registration_cahai_status(db, email=email)
+        if not updated_user:
+            raise HTTPException(status_code=404, detail="User not found")
+        updated_user = crud.update_registration_tiec_reset(db, email=email, status=0)
+        updated_user = crud.update_registration_le_reset(db, email=email, status=0)
+        return {
+        "status": True,
+        "message": "CAHAI status updated successfully",
+        "user": {
+            "email": updated_user.email,
+            "le": updated_user.cahai
+            }
+            }
