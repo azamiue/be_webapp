@@ -83,7 +83,7 @@ def update_registration_cahai_reset(db: Session, email: str, status: int = 0):
         db.refresh(db_user)
         return db_user
     return None
-
+    
 def create_user(db: Session, name: str, email: str):
     db_user = models.User(name=name, email=email, reg=False, le=False, hoi=False, cahai=False)
     db.add(db_user)
