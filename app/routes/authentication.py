@@ -21,7 +21,7 @@ def get_db():
 
 @authen.get("/auth/{email}")
 def read_user(email: str, db: Session = Depends(get_db)):
-    db_user = crud.get_email(db, email=email)
+    db_user = crud.get_email(db, email=email.lower())
     if db_user is None:
         return {
             "status": False
@@ -30,6 +30,7 @@ def read_user(email: str, db: Session = Depends(get_db)):
     reg = crud.get_status(db, email=email)
 
     return {
+        "idx": db_user.id,
         "status": True,
         "reg": reg
     }
@@ -37,7 +38,7 @@ def read_user(email: str, db: Session = Depends(get_db)):
 
 @authen.post("/update-reg/{email}")
 def update_reg(email: str, db: Session = Depends(get_db)):
-    updated_user = crud.update_registration_status(db, email=email, status=1)
+    updated_user = crud.update_registration_status(db, email=email.lower(), status=1)
     if not updated_user:
         raise HTTPException(status_code=404, detail="User not found")
     return {
