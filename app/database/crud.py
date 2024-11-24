@@ -36,6 +36,15 @@ def create_user(db: Session, name: str, email: str):
     db.refresh(db_user)
     return db_user
 
+def delete_user_by_email(db: Session, email: str):
+    db_user = db.query(models.User).filter(models.User.email == email).first()
+    if db_user:
+        db.delete(db_user)
+        db.commit()
+        return {"message": "User deleted successfully"}
+    else:
+        return {"message": "User not found"}
+
 def update_registration_le_status(db: Session, email: str, status: int = 1):
     db_user = db.query(models.User).filter(models.User.email == email).first()
     if db_user:
