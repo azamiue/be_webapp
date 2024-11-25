@@ -21,9 +21,9 @@ def get_db():
 
 @users.post("/users/")
 def create_user(name: str, email: str, db: Session = Depends(get_db)):
-    return crud.create_user(db=db, name=name, email=email)
+    return crud.create_user(db=db, name=name, email=email.lower())
 
 @users.delete("/users/")
 def delete_user(email: str, db: Session = Depends(get_db)):
-    result = crud.delete_user_by_email(db=db, email=email)
+    result = crud.delete_user_by_email(db=db, email=email.lower())
     return result
