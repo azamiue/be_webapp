@@ -45,8 +45,8 @@ def delete_user_by_email(db: Session, email: str):
     else:
         return {"message": "User not found"}
 
-def update_registration_le_status(db: Session, email: str, status: int = 1):
-    db_user = db.query(models.User).filter(models.User.email == email.lower()).first()
+def update_registration_le_status(db: Session, user_id: int, status: int = 1):
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
     if db_user:
         db_user.le = status
         db.commit()
@@ -54,8 +54,8 @@ def update_registration_le_status(db: Session, email: str, status: int = 1):
         return db_user
     return None
 
-def update_registration_le_reset(db: Session, email: str, status: int = 0):
-    db_user = db.query(models.User).filter(models.User.email == email.lower()).first()
+def update_registration_le_reset(db: Session, user_id: int, status: int = 0):
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
     if db_user:
         db_user.le = status
         db.commit()
@@ -63,8 +63,8 @@ def update_registration_le_reset(db: Session, email: str, status: int = 0):
         return db_user
     return None
 
-def update_registration_tiec_status(db: Session, email: str, status: int = 1):
-    db_user = db.query(models.User).filter(models.User.email == email.lower()).first()
+def update_registration_tiec_status(db: Session, user_id: int, status: int = 1):
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
     if db_user:
         db_user.tiec = status
         db.commit()
@@ -72,8 +72,8 @@ def update_registration_tiec_status(db: Session, email: str, status: int = 1):
         return db_user
     return None
 
-def update_registration_tiec_reset(db: Session, email: str, status: int = 0):
-    db_user = db.query(models.User).filter(models.User.email == email.lower()).first()
+def update_registration_tiec_reset(db: Session, user_id: int, status: int = 0):
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
     if db_user:
         db_user.tiec = status
         db.commit()
@@ -81,8 +81,8 @@ def update_registration_tiec_reset(db: Session, email: str, status: int = 0):
         return db_user
     return None
 
-def update_registration_cahai_status(db: Session, email: str, status: int = 1):
-    db_user = db.query(models.User).filter(models.User.email == email.lower()).first()
+def update_registration_cahai_status(db: Session, user_id: int, status: int = 1):
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
     if db_user:
         db_user.cahai = status
         db.commit()
@@ -90,8 +90,8 @@ def update_registration_cahai_status(db: Session, email: str, status: int = 1):
         return db_user
     return None
 
-def update_registration_cahai_reset(db: Session, email: str, status: int = 0):
-    db_user = db.query(models.User).filter(models.User.email == email.lower()).first()
+def update_registration_cahai_reset(db: Session, user_id: int, status: int = 0):
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
     if db_user:
         db_user.cahai = status
         db.commit()

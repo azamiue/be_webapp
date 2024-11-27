@@ -64,50 +64,58 @@ def update_reg(email: str, db: Session = Depends(get_db)):
         }
     }       
 
-@authen.post("/update-status/{email}")
-def update_le_hoi(email: str, status: str, db: Session = Depends(get_db)):
-
+@authen.post("/update-status/{user_id}")
+def update_le_hoi(user_id: int, status: str, db: Session = Depends(get_db)):
     if status == "le":
-        updated_user = crud.update_registration_le_status(db, email=email.lower())
+        updated_user = crud.update_registration_le_status(db, user_id=user_id)
         if not updated_user:
             raise HTTPException(status_code=404, detail="User not found")
-        updated_user = crud.update_registration_tiec_reset(db, email=email.lower(), status=0)
-        updated_user = crud.update_registration_cahai_reset(db, email=email.lower(), status=0)
+        # Reset other statuses
+        updated_user = crud.update_registration_tiec_reset(db, user_id=user_id)
+        updated_user = crud.update_registration_cahai_reset(db, user_id=user_id)
         return {
-        "status": True,
-        "message": "LE status updated successfully",
-        "user": {
-            "email": updated_user.email,
-            "le": updated_user.le
+            "status": True,
+            "message": "Lễ status updated successfully",
+            "user": {
+                "id": updated_user.id,
+                "email": updated_user.email,
+                "le": updated_user.le
             }
-            }
+        }
     
-    if status == "tiec":
-        updated_user = crud.update_registration_hoi_status(db, email=email.lower())
+    elif status == "tiec":
+        updated_user = crud.update_registration_tiec_status(db, user_id=user_id)
         if not updated_user:
             raise HTTPException(status_code=404, detail="User not found")
-        updated_user = crud.update_registration_tiec_reset(db, email=email.lower(), status=0)
-        updated_user = crud.update_registration_cahai_reset(db, email=email.lower(), status=0)
+        # Reset other statuses
+        updated_user = crud.update_registration_le_reset(db, user_id=user_id)
+        updated_user = crud.update_registration_cahai_reset(db, user_id=user_id)
         return {
-        "status": True,
-        "message": "Tiec status updated successfully",
-        "user": {
-            "email": updated_user.email,
-            "le": updated_user.tiec
+            "status": True,
+            "message": "Tiệc status updated successfully",
+            "user": {
+                "id": updated_user.id,
+                "email": updated_user.email,
+                "tiec": updated_user.tiec
             }
-            }
+        }
     
-    if status == "cahai":
-        updated_user = crud.update_registration_cahai_status(db, email=email.lower())
+    elif status == "cahai":
+        updated_user = crud.update_registration_cahai_status(db, user_id=user_id)
         if not updated_user:
             raise HTTPException(status_code=404, detail="User not found")
-        updated_user = crud.update_registration_tiec_reset(db, email=email.lower(), status=0)
-        updated_user = crud.update_registration_le_reset(db, email=email.lower(), status=0)
+        # Reset other statuses
+        updated_user = crud.update_registration_le_reset(db, user_id=user_id)
+        updated_user = crud.update_registration_tiec_reset(db, user_id=user_id)
         return {
-        "status": True,
-        "message": "CAHAI status updated successfully",
-        "user": {
-            "email": updated_user.email,
-            "le": updated_user.cahai
+            "status": True,
+            "message": "Cả hai status updated successfully",
+            "user": {
+                "id": updated_user.id,
+                "email": updated_user.email,
+                "cahai": updated_user.cahai
             }
-            }
+        }
+    
+    else:
+        raise HTTPException(status_code=400, detail="Invalid status value")

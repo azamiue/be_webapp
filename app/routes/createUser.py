@@ -27,3 +27,15 @@ def create_user(name: str, email: str, db: Session = Depends(get_db)):
 def delete_user(email: str, db: Session = Depends(get_db)):
     result = crud.delete_user_by_email(db=db, email=email.lower())
     return result
+
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+
+# Set up Jinja2 templates
+templates = Jinja2Templates(directory="/home/capybara/be_webapp/app/templates/users")
+
+@users.get("/users-table", response_class=HTMLResponse)
+def get_users_table(db: Session = Depends(get_db)):
+    users = db.query(models.User).all()
+    
+    return templates.TemplateResponse("users_table.html", {"request": {}, "users": users})
